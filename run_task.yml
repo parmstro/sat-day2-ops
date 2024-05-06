@@ -1,0 +1,12 @@
+---
+- name: "Run the specified task"
+  hosts: satellite
+  become: true
+  gather_facts: true
+  vars_files:
+    - "~/rhisbuilder_vault.yml"
+
+  tasks:
+
+    - name: "Running a day 2 task - {{ task_name }}"
+      ansible.builtin.include_tasks: tasks/{{ task_name }}.yml
