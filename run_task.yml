@@ -1,6 +1,6 @@
 ---
 - name: "Run the specified task"
-  hosts: satellite
+  hosts: all
   become: true
   gather_facts: true
   vars_files:
