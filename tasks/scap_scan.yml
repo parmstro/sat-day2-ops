@@ -1,4 +1,6 @@
 ---
+# Run a SCAP scan on a host or series of hosts based on a Query to satellite
+# Retrieve the results of the job
 
 - name: "Running SCAP based on query {{ scan.search_query }}"
   redhat.satellite.job_invocation:
@@ -17,3 +19,19 @@
     ssh: "{{ scan.ssh | default(omit) }}"
     scheduling: "{{ scan.scheduling | default(omit) }}"
     targeting_type: "{{ scan.targeting_type | default(omit) }}"
+  register: job_info
+
+- name: "Debug output"
+  when: debug_info
+  ansible.builtin.debug:
+    var: job_info
+
+- name: "Watch for the SCAP scans to finish"
+  ansible.builtin.uri:
+    url: "{{ satellite_url }}/api/v2/job_invocations/{{ job_info.id }}"
+    method: GET
+    return_content: true
+  register: job_status
+  until: job_status.pending = 0
+  retries: 30 # retry X times
+  delay: 10
