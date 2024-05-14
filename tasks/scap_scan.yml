@@ -31,12 +31,14 @@
     var: job_info
 
 - name: "Watch for the SCAP scans to finish"
-  ansible.builtin.uri:
-    url: "{{ satellite_url }}/api/v2/job_invocations/{{ job_info.id }}"
-    url_username: "{{ satellite_admin_username }}"
-    url_password: "{{ satellite_admin_password }}"
-    method: GET
-    return_content: true
+  redhat.satellite.resource_info:
+    username: "{{ satellite_admin_username }}"
+    password: "{{ satellite_admin_password }}"
+    server_url: "{{ satellite_url }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    resource: job_invocations
+    params:
+      id: "{{ job_info.id }}"
   register: job_status
 
 - name: "Debug output"
