@@ -35,9 +35,9 @@
     params:
       id: "{{ job_info.id }}"
   register: job_status
-#  until: job_status.pending == 0
-#  retries: 30 # retry X times
-#  delay: 10
+  until: job_status.resources.0.pending == 0
+  retries: 30 # retry X times
+  delay: 10
 
 - name: "Debug output"
   when: debug_info
