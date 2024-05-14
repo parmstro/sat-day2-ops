@@ -23,7 +23,7 @@
 
 - name: "Get the job invocation info"
   ansible.builtin.set_fact:
-    job_info: "{{ result.entity.job_invocations.[0] }}"
+    job_info: "{{ result.entity.job_invocations.0 }}"
 
 - name: "Debug output"
   when: debug_info
