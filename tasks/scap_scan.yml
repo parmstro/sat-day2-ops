@@ -33,6 +33,7 @@
 - name: "Watch for the SCAP scans to finish"
   ansible.builtin.uri:
     url: "{{ satellite_url }}/api/v2/job_invocations/{{ job_info.id }}"
+    use_gssapi: true
     method: GET
     return_content: true
   register: job_status
