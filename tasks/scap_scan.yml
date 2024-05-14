@@ -40,20 +40,6 @@
     params:
       id: "{{ job_info.id }}"
   register: job_status
-
-- name: "Debug output"
-  when: debug_info
-  ansible.builtin.debug:
-    var: job_status
-
-- name: "Watch for the SCAP scans to finish"
-  ansible.builtin.uri:
-    url: "{{ satellite_url }}/api/v2/job_invocations/{{ job_info.id }}"
-    url_username: "{{ satellite_admin_username }}"
-    url_password: "{{ satellite_admin_password }}"
-    method: GET
-    return_content: true
-  register: job_status
   until: job_status.pending == 0
   retries: 30 # retry X times
   delay: 10
