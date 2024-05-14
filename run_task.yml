@@ -3,7 +3,10 @@
   hosts: all
   become: true
   gather_facts: true
-  vars_files: vars/satellite_vault.yml
+  vars_files: 
+    - vars/satellite_vault.yml
+  vars:
+    - debug_info: true
 
   tasks:
 
