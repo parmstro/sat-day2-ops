@@ -47,4 +47,4 @@
 - name: "Notify if there are failed scans"
   ansible.builtin.fail:
     msg: "One or more scans failed. Failed Scans: {{ job_status.resources.0.failed }}"
-  when: job_status.resouces.0.failed != 0
+  when: job_status.resources.0.failed != 0
