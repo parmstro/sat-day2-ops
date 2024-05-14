@@ -43,3 +43,7 @@
   when: debug_info
   ansible.builtin.debug:
     var: job_status
+
+- name: "Notify if there are failed scans"
+  ansible.builtin.fail:
+    when: job_status.resouces.0.failed != 0
