@@ -95,5 +95,5 @@
 
     # This deprecated in the latest cockpit deployments
     - name: "Create bundle of key and cert"  # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      when: ansible_facts['distribution_major_version'] = "7"
+      when: ansible_facts['distribution_major_version'] == "7"
       ansible.builtin.shell: "cat {{ ssl_crt_path }} > {{ crt_key_bundle_path }}; cat {{ ssl_private_key_path }} >> {{ crt_key_bundle_path }};"
