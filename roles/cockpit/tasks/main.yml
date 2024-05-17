@@ -1,0 +1,67 @@
+---
+# cockpit
+#   dependencies:
+#     cockpit-bridge
+#     cockpit-system
+#     cockpit-ws
+#     cockpit-packagekit
+#     subscription-manager-cockpit
+#
+#   optional:
+#     RHEL7 == none
+#     RHEL8:
+#       - cockpit-composer
+#       - cockpit-dashboard
+#       - cockpit-leapp
+#       - cockpit-machines
+#       - cockpit-podman
+#       - cockpit-pcp
+#       - cockpit-session-recording
+
+- name: "Initialize the package list"
+  ansible.builtin.set_fact:
+    cockpit_list: []
+
+- name: "Ensure the default package"
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit'] }}"
+
+- name: "Ensure the cockpit-composer plugin, when specified"
+  when: cockpit_composer or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-composer'] }}"
+
+- name: "Ensure the cockpit-dashboard plugin, when specified"
+  when: cockpit_dashboard or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-dashboard'] }}"
+
+- name: "Ensure the cockpit-leapp plugin, when specified"
+  when: cockpit_leapp or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-leapp'] }}"
+
+- name: "Ensure the cockpit-machines plugin, when specified"
+  when: cockpit_machines or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-machines'] }}"
+
+- name: "Ensure the cockpit-podman plugin, when specified"
+  when: cockpit_podman or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-podman'] }}"
+
+- name: "Ensure the cockpit-pcp plugin, when specified"
+  when: cockpit_pcp or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-pcp'] }}"
+
+- name: "Ensure the cockpit-session-recording plugin, when specified"
+  when: cockpit_session_recording or cockpit_all
+  ansible.builtin.set_fact:
+    cockpit_list: "{{ cockpit_list + ['cockpit-dashboard'] }}"
+
+- name: "Ensure the web console packages are installed"
+  ansible.builtin.yum:
+    name: "{{ cockpit_list }}"
+    state: present
