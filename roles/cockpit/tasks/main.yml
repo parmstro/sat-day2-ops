@@ -65,3 +65,16 @@
   ansible.builtin.yum:
     name: "{{ cockpit_list }}"
     state: present
+
+- name: "Ensure that the firewall is open"
+  ansible.builtin.service:
+    name: firewalld
+    enabled: true
+    state: started
+
+- name: "Ensure that the firewall is open"
+  ansible.posix.firewalld:
+    immediate: true
+    permanent: true
+    service: cockpit
+    state: enabled
