@@ -27,37 +27,51 @@
     cockpit_list: "{{ cockpit_list + ['cockpit'] }}"
 
 - name: "Ensure the cockpit-composer plugin, when specified"
-  when: cockpit_composer or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-composer'] }}"
 
 - name: "Ensure the cockpit-dashboard plugin, when specified"
-  when: cockpit_dashboard or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-dashboard'] }}"
 
 - name: "Ensure the cockpit-leapp plugin, when specified"
-  when: cockpit_leapp or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-leapp'] }}"
 
 - name: "Ensure the cockpit-machines plugin, when specified"
-  when: cockpit_machines or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-machines'] }}"
 
 - name: "Ensure the cockpit-podman plugin, when specified"
-  when: cockpit_podman or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-podman'] }}"
 
 - name: "Ensure the cockpit-pcp plugin, when specified"
-  when: cockpit_pcp or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-pcp'] }}"
 
 - name: "Ensure the cockpit-session-recording plugin, when specified"
-  when: cockpit_session_recording or cockpit_all
+  when:
+    - cockpit_composer or cockpit_all
+    - ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.set_fact:
     cockpit_list: "{{ cockpit_list + ['cockpit-dashboard'] }}"
 
