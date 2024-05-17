@@ -41,7 +41,18 @@
     path: "/etc/cockpit/ws-cert/z-*"
     state: absent
 
+- name: "Copy the bundle to cockpit cert directory"
+  when: ansible_facts['distribution_major_version'] == "7"
+  ansible.builtin.copy:
+    src: "{{ crt_key_bundle_path }}"
+    dest: "{{ cockpit_bundle_path }}"
+    mode: "0744"
+    owner: "root"
+    group: "root"
+    remote_src: true
+
 - name: "Copy the crt to cockpit cert directory"
+  when: ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.copy:
     src: "{{ ssl_crt_path }}"
     dest: "{{ cockpit_crt_path }}"
@@ -51,6 +62,7 @@
     remote_src: true
 
 - name: "Copy the key to cockpit cert directory"
+  when: ansible_facts['distribution_major_version'] > "7"
   ansible.builtin.copy:
     src: "{{ ssl_private_key_path }}"
     dest: "{{ cockpit_key_path }}"

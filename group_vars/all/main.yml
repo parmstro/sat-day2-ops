@@ -29,5 +29,6 @@ create_crt_key_bundle: false
 crt_key_bundle_path: "{{ crt_dir }}/{{ ansible_fqdn }}.cockpit.cert"
 cockpit_crt_path: "/etc/cockpit/ws-certs.d/z-{{ ansible_fqdn }}.cockpit.crt"
 cockpit_key_path: "/etc/cockpit/ws-certs.d/z-{{ ansible_fqdn }}.cockpit.key"
+cockpit_bundle_path: "/etc/cockpit/ws-certs.d/z-{{ ansible_fqdn }}.cockpit.cert"
 cockpit_self_ca_crt: "/etc/cockpit/ws-certs.d/0-self-signed-ca.pem"
 cockpit_self_crt: "/etc/cockpit/ws-certs.d/0-self-signed.cert"
