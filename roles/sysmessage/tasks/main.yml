@@ -13,6 +13,10 @@
       If sysmessage_issue is empty, it will default to
       sysmessage_motd text.
 
+- name: "Deploying sysmessage_type:"
+  ansible.builtin.debug:
+    var: sysmessage_type
+
 - name: "Deploy the template to motd"
   ansible.builtin.template:
     src: motd.j2
