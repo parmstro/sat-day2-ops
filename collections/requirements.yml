@@ -3,4 +3,4 @@ collections:
     version: ">=7.0"
   - name: ansible.posix
   - name: redhat.satellite
-    version: ">=4.0"
+
