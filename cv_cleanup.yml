@@ -6,60 +6,17 @@
   hosts: all
 
   tasks:
-    
+
     - name: "Start cleanup"
       ansible.builtin.include_role:
         name: cvcleanup
-      vars:
-        composite_content_views:
-          - name: convert2rhel
-            num_cvs_to_keep: 2
-          - name: LEAPP_728
-            num_cvs_to_keep: 2
-          - name: LEAPP_829
-            num_cvs_to_keep: 2
-          - name: SOE_AAP
-            num_cvs_to_keep: 2
-          - name: SOE_AAP_Developer
-            num_cvs_to_keep: 2
-          - name: SOE_JBoss
-            num_cvs_to_keep: 2
-          - name: SOE_MSSQL
-            num_cvs_to_keep: 2
-          - name: SOE_RHEL8EPEL
-            num_cvs_to_keep: 2
-          - name: SOE_RHEL9EPEL
-            num_cvs_to_keep: 2
-        content_views:
-          - name: "CentOS79"
-            num_cvs_to_keep: 1
-          - name: CentOS_Streams8
-            num_cvs_to_keep: 3
-          - name: CentOS_SubMan
-            num_cvs_to_keep: 3
-          - name: convert2rhel_utils
-            num_cvs_to_keep: 3
-          - name: EPEL7
-            num_cvs_to_keep: 3
-          - name: EPEL8
-            num_cvs_to_keep: 3
-          - name: EPEL9
-            num_cvs_to_keep: 3
-          - name: JBossEAP74
-            num_cvs_to_keep: 3
-          - name: JBossWeb5
-            num_cvs_to_keep: 3
-          - name: LEAPP_86
-            num_cvs_to_keep: 3
-          - name: mssqlserver
-            num_cvs_to_keep: 3
-          - name: SOE_Capsule
-            num_cvs_to_keep: 3
-          - name: SOE_RHEL7
-            num_cvs_to_keep: 3
-          - name: SOE_RHEL8
-            num_cvs_to_keep: 3
-          - name: SOE_RHEL9
-            num_cvs_to_keep: 3
-          - name: SOE_RHEL9_aarch64
-            num_cvs_to_keep: 3
+#      vars:
+#        composite_content_views:
+#          - name: SOE_AAP
+#            num_cvs_to_keep: 2
+#          - name: SOE_AAP_Developer
+#            num_cvs_to_keep: 2
+#        content_views:
+#          - name: AAP_Files
+#            num_cvs_to_keep: 3
+# Example variables for calling this role.
