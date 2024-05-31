@@ -27,6 +27,11 @@
     path: "{{ ssl_crt_path }}"
   register: cert_exists
 
+- name: "Set the HTTP service owner nickname"
+  when: service_owner_nickname is not defined
+  ansible.builtin.set_fact:
+    service_owner_nickname: "{{ ansible_fqdn }}"
+
 - name: "Cert exists and regen requested"
   when: cert_exists.stat.exists and force_regen
   block:
@@ -40,7 +45,7 @@
       register: serial_num
 
     - name: "Cert exists, regenerating - stop tracking" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "ipa-getcert stop-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -i {{ ansible_fqdn }}"
+      ansible.builtin.shell: "ipa-getcert stop-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -i {{ service_owner_nickname }}"
       ignore_errors: true
 
     - name: "Cert exists, regenerating - remove the old cert from the service" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
@@ -88,10 +93,10 @@
       ansible.builtin.command: "openssl req -new -key {{ ssl_private_key_path }} -out {{ csr_path }} -subj \"/C={{ csr_country_name }}/ST={{ csr_state_or_province_name }}/L={{ csr_locality_name }}/O={{ csr_organization_name }}/OU={{ csr_organization_unit_name }}/CN={{ ansible_fqdn }}/subjectAltName=DNS.1={{ ansible_fqdn }}\""
 
     - name: "Generate the certificate for the service" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
+      ansible.builtin.shell: "ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
 
     - name: "Ensure that certmonger starts-tracking the new certificate for autorenewals" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ ansible_fqdn }}"
+      ansible.builtin.shell: "ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ service_owner_nickname }}"
 
     # This deprecated in the latest cockpit deployments
     - name: "Create bundle of key and cert"  # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors

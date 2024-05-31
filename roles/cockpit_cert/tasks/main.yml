@@ -32,6 +32,10 @@
     service: cockpit
     state: enabled
 
+- name: "Set the http service owner nickname to cockpit"
+  ansible.builtin.set_fact:
+    service_owner_nickname: "cockpit"
+
 - name: "Ensure the http certificate exists"
   ansible.builtin.include_role:
     name: http_cert
