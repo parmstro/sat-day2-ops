@@ -1,0 +1,4 @@
+---
+ipa_principal_vault: "admin"
+ipa_password_vault: "#Legend2013"
+ssl_private_key_passphrase_vault: "Legend2013"

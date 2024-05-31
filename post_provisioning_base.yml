@@ -5,9 +5,6 @@
 - name: "Apply the post-provisioning configuration"
   hosts: all
   become: true
-  vars_files:
-    - /etc/ansible/vault/ipa_vault.yml
-    - /etc/ansible/vault/satellite_vault.yml
 
   tasks:
     - name: "Info:"
