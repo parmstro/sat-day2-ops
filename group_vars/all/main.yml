@@ -1,4 +1,5 @@
 # variables for all hosts
+debug_output: true
 
 sat_organization: "Default Organization"
 sat_location: "Default Location"

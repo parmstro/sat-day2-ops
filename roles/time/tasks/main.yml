@@ -4,6 +4,11 @@
 - name: "Gather service facts"
   ansible.builtin.service_facts:
 
+- name: "Display services for debug"
+  when: debug_output
+  ansible.builtin.debug:
+    var: ansible_facts.services
+
 - name: "Ensure that ntp is stopped, disabled, and masked"
   when: time_timedaemon == "chrony" and "ntpd.service" in ansible_facts.services
   ansible.builtin.systemd_service:
