@@ -93,10 +93,10 @@
       ansible.builtin.command: "openssl req -new -key {{ ssl_private_key_path }} -out {{ csr_path }} -subj \"/C={{ csr_country_name }}/ST={{ csr_state_or_province_name }}/L={{ csr_locality_name }}/O={{ csr_organization_name }}/OU={{ csr_organization_unit_name }}/CN={{ ansible_fqdn }}/subjectAltName=DNS.1={{ ansible_fqdn }}\""
 
     - name: "Generate the certificate for the service" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
+      ansible.builtin.command: "ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
 
     - name: "Ensure that certmonger starts-tracking the new certificate for autorenewals" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ service_owner_nickname }}"
+      ansible.builtin.command: "ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ service_owner_nickname }}"
 
     # This deprecated in the latest cockpit deployments
     - name: "Create bundle of key and cert"  # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
