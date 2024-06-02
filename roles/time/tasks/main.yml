@@ -11,11 +11,10 @@
 
 - name: "Ensure that ntp is stopped, disabled, and masked"
   when: time_timedaemon == "chrony" and ansible_facts.services['ntpd.service'] is defined
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: ntpd
     state: stopped
     enabled: false
-    masked: true
 
 - name: "Ensure chrony is installed"
   ansible.builtin.package:
@@ -31,7 +30,7 @@
     mode: "0644"
 
 - name: "Ensure chrony is running with the new configuration"
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: chronyd
     state: restarted
     enabled: true
