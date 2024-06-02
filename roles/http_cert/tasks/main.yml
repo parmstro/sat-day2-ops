@@ -49,16 +49,17 @@
       ignore_errors: true
 
     - name: "Cert exists, regenerating - remove the old cert from the service" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.shell: "ipa service-remove-cert {{ target_service }} --certificate='{{ cert.stdout }}'"
+      ansible.builtin.shell: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa service-remove-cert {{ target_service }} --certificate='{{ cert.stdout }}'"
       ignore_errors: true
-
+      no_log: true
 
     - name: "Revocation"
       block:
         - name: "Cert exists, revoke the old cert with reason 6 - certificateHold - an admin can completely revoke it later" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-          ansible.builtin.shell: "ipa cert-revoke {{ serial_num.stdout }} --revocation-reason=6"
+          ansible.builtin.shell: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa cert-revoke {{ serial_num.stdout }} --revocation-reason=6"
           register: revocation
           when: serial_num.stdout != ""
+          no_log: true
 
       rescue:
         - name: "If the return code is 127, the cert didn't exist"
@@ -93,10 +94,12 @@
       ansible.builtin.command: "openssl req -new -key {{ ssl_private_key_path }} -out {{ csr_path }} -subj \"/C={{ csr_country_name }}/ST={{ csr_state_or_province_name }}/L={{ csr_locality_name }}/O={{ csr_organization_name }}/OU={{ csr_organization_unit_name }}/CN={{ ansible_fqdn }}/subjectAltName=DNS.1={{ ansible_fqdn }}\""
 
     - name: "Generate the certificate for the service" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.command: "ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
+      ansible.builtin.command: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa cert-request --add --principal='{{ target_service }}' {{ csr_path }} --certificate-out={{ ssl_crt_path }}"
+      no_log: true
 
     - name: "Ensure that certmonger starts-tracking the new certificate for autorenewals" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
-      ansible.builtin.command: "ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ service_owner_nickname }}"
+      ansible.builtin.command: "echo '{{ ipa_password }}' | kinit {{ ipa_principal }};ipa-getcert start-tracking -k {{ ssl_private_key_path }} -f {{ ssl_crt_path }} -I {{ service_owner_nickname }}"
+      no_log: true
 
     # This deprecated in the latest cockpit deployments
     - name: "Create bundle of key and cert"  # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
