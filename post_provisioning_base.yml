@@ -13,6 +13,6 @@
 
   roles:
     - time
+    - cockpit # sysmessage puts a file in cockpit dir.
     - sysmessage
-    - cockpit
     - cockpit_cert
