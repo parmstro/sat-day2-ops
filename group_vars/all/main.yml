@@ -1,7 +1,7 @@
 # variables for all hosts
 
 debug_output: false
-# debug_output: true
+debug_output: true
 
 sat_organization: "Default Organization"
 sat_location: "Default Location"
