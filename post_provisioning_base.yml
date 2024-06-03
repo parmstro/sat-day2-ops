@@ -12,7 +12,7 @@
         msg: Post Provisioning Setup
 
   roles:
-    - cockpit
     - time
     - sysmessage
+    - cockpit
     - cockpit_cert
