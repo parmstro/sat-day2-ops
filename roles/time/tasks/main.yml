@@ -10,7 +10,7 @@
     var: ansible_facts.services
 
 - name: "Ensure that ntp is stopped, disabled, and masked"
-  when: time_timedaemon == "chrony" and "ntpd.service" in ansible_facts.services
+  when: time_timedaemon == "chrony" and ansible_facts.services['ntpd.service'].status == 'enabled'
   ansible.builtin.service:
     name: ntpd
     state: stopped
