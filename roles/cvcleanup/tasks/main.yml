@@ -15,3 +15,9 @@
   loop: "{{ content_views }}"
   loop_control:
     loop_var: cv
+
+# Call rake task to force disk cleanup now if requested.
+- name: "Launch foreman-rake task"
+  when: cleanup_storage_now
+  ansible.builtin.command: "/usr/sbin/foreman-rake katello:delete_orphaned_content RAILS_ENV=production"
+  
